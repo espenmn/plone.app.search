@@ -69,7 +69,12 @@ class Search(BrowserView):
         valid_indexes = tuple(catalog.indexes())
         valid_keys = self.valid_keys + valid_indexes
         registry = getUtility(IRegistry)
-        search_wildcard = registry['plone.app.search.wildcard']
+        
+        #I dont have an upgrade profile yet, so we do it with a try-statement
+        try: 
+            search_wildcard = registry['plone.app.search.wildcard']
+        except :
+            search_wildcard = 0 
 
         text = query.get('SearchableText', None)
         if text is None:
