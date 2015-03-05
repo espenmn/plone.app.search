@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<registry>
+  
+  <records>
+	<record name="plone.app.search.WildcardSetting">
+      <value key="search_wildcard"></value>
+    </record>
+  </records>
+
+</registry>
