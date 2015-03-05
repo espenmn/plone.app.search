@@ -81,6 +81,7 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith('facet.')):
                 query[k] = v
         if text:
+            text = '*' + text + '*'
             query['SearchableText'] = quote_chars(text)
 
         # don't filter on created at all if we want all results
