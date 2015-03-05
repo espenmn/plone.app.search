@@ -7,9 +7,11 @@ from Products.CMFPlone.browser.navtree import getNavigationRoot
 from Products.CMFPlone.PloneBatch import Batch
 from Products.ZCTextIndex.ParseTree import ParseError
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
+from plone.registry.interfaces import IRegistry
 
 _ = MessageFactory('plone')
 
@@ -66,6 +68,8 @@ class Search(BrowserView):
         catalog = getToolByName(self.context, 'portal_catalog')
         valid_indexes = tuple(catalog.indexes())
         valid_keys = self.valid_keys + valid_indexes
+        registry = getUtility(IRegistry)
+        search_wildcard = registry['plone.app.search.wildcard']
 
         text = query.get('SearchableText', None)
         if text is None:
@@ -81,7 +85,9 @@ class Search(BrowserView):
             if v and ((k in valid_keys) or k.startswith('facet.')):
                 query[k] = v
         if text:
-            text = '*' + text + '*'
+            # if setting in registry is on, use wildcard in search
+            if search_wildcard:
+                text = '*' + text + '*'
             query['SearchableText'] = quote_chars(text)
 
         # don't filter on created at all if we want all results

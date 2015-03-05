@@ -30,6 +30,7 @@ setup(name='plone.app.search',
       install_requires=[
           'setuptools',
           'plone.app.contentlisting',
+          'plone.api',
           # -*- Extra requirements: -*-
       ],
       tests_require=tests_require,
